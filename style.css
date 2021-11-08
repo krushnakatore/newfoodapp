@@ -1,0 +1,24 @@
+#navbar{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+    padding-left:3%;
+    padding-right:3%;
+}
+
+    #homeright{
+     display: flex;
+     justify-content: space-between;
+    }
+    #homeright h3{
+     padding-left: 40px;
+     padding-right: 5px;
+    }
+
+    #box{
+        display: grid;
+        grid-template-columns: repeat(4,20%);
+
+        grid-gap:20px;
+        justify-content: center;
+    }

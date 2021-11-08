@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel = "stylesheet" href ="./style.css">
+</head>
+<body>
+    <div id = "navbar"></div>
+    <div id = "box"></div>
+    <div>Choose your Meal<input oninput="debounce(main,1000)" type="text" id="foodie" placeholder="Enter meal name" /></div>
+    <div id="food" ></div>
+<div id ="food1"></div>
+</body>
+</html>
+<script type = "module">
+
+    import navbar from "./navbar.js";
+
+    let nav = document.getElementById("navbar");
+
+    nav.innerHTML = navbar();
+
+   
+</script>
+<script>
+    // import navbar1 from "./navbaroffoodapp.js"
+    let food_div = document.getElementById("food");
+    
+    
+    let food_div1 = document.getElementById("food1");
+    
+    var timerId;
+    async function searchFood(food_name){
+     
+     try{
+         let res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${food_name}`);
+    
+    
+         let data = await res.json();
+    
+         console.log(res.meals)
+         return data;
+         
+     }
+     catch(e){
+         console.log(e)
+    
+     }
+    
+    }
+    
+    function appendFood(foods){
+    if(foods == undefined){
+       
+        return false;
+        
+    }
+    
+    // movies_div.innerHTML = null;
+    
+    // movies_div.
+    
+    foods.forEach(function(food){
+    
+        
+         let p = document.createElement("p");
+    
+        //let p1 = document.createElement("p");
+    
+        p.innerText = food.strMeal;
+        food_div.style.height = "300px"
+        food_div.style.width = "220px"
+        food_div.style.overflow = "scroll";
+        
+    
+         food_div.append(p); 
+        
+        
+        
+    
+        
+    
+        //movies_div.append(p);
+        
+        p.onclick = ()=>{
+            // alert(food.Title);
+            if(food_div1.innerHTML !== null){
+                food_div1.innerHTML = null;
+            }
+    
+            let box = document.createElement("div")
+            box.classList.add("div1")
+    
+            
+    
+            let box1 = document.createElement("img")
+            box1.classList.add("div2")
+    
+            box1.src = food.strMealThumb;
+    
+            let box2 = document.createElement("p")
+            box2.classList.add("div3")
+    
+            box2.innerText= food.strMeal;
+    
+    
+            // let box3 = document.createElement("p")
+            // box3.classList.add("div4")
+    
+            // box3.innerText =movie.Year;
+    
+            box.append(box1,box2);
+    
+            food_div1.append(box);
+       
+            food_div.style.innerHTML = ""
+    
+        }
+        // let div = document.createElement("div");
+        // div.style.width = "400px";
+        // div.style.height ="400px"
+        // div.append(p)
+        
+        // movies_div.append(div)
+        
+        
+    });
+    
+    
+    //movies.addEventListener(onclick,"show")
+    }
+    
+    async function main(){
+    
+    let name = document.getElementById("foodie").value;
+    
+    
+    let res = await searchFood(name);
+    
+    let movies_data = res.meals
+    
+    appendFood(movies_data);
+     
+    // let res = await searchMovies(name);
+    
+    
+    console.log(movies_data);
+    //console.log(res);
+    //movies_data.addEventListener("onclick",show12)
+    }
+    
+    function debounce(func,delay){
+    
+    if(timerId){
+       clearTimeout(timerId);
+    }
+    
+    timerId = setTimeout(function(){
+        func();
+    },delay)
+    
+    }
+    </script>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #login-form{
+        width:20px;
+    }
+</style>
+<body>
+    <div>Youtube Login Page</div>
+    <div id = "login"></div>
+    <form onsubmit = "Login(event)" id ="login-form">
+        
+        <label for="Username">Username:</label><br>
+        <input type="text" id="user" placeholder="username"><br>
+        <label for="Password">Password:</label><br>
+        <input type="password" id="pass" placeholder="password"><br>
+        
+       
+        <!-- <label for="Description">Description:</label><br> -->
+        <input type="submit" />
+        <div id = "wrongpassw"></div>  
+        
+    </form>
+</body>
+</html>
+<script>
+    let wrong_passw = document.getElementById("wrongpassw")
+    function Login(e){
+        e.preventDefault();
+
+        let form = document.getElementById("login-form")
+
+        let user_data = {
+            username : form.user.value,
+
+            password: form.pass.value,
+        };
+
+        let data_to_send = JSON.stringify(user_data);
+        console.log(data_to_send)
+
+
+        fetch("https://masai-api-mocker.herokuapp.com/auth/login",{
+
+            method:'POST',
+
+            body: data_to_send,
+
+            headers:{
+              "Content-Type": "application/json",
+            },
+        })
+
+        .then ((res)=>{
+
+            return res.json();
+
+        })
+
+        .then((res)=>{
+            console.log(res)
+
+            fetchmyData(user_data.username,res.token)
+            console.log(user_data.username)
+            
+        })
+
+        .catch((err)=>{
+         alert("Invalid Username or Password")
+        
+        });
+
+
+   //spelling and check key valur pair of the data that you are posting
+// check url
+//body must be a stringified data 
+// 
+
+
+   }
+
+   function fetchmyData(username,token){
+       fetch(`https://masai-api-mocker.herokuapp.com/user/${username}`,{
+
+        headers:{
+            "Content-Type": "application/json",
+
+            Authorization: `Bearer ${token}`,
+        },
+
+       })
+       .then ((res)=>{
+           return res.json();
+       })
+       .then ((res)=>{
+           console.log(res);
+           if(res.error == true){
+           alert("Wrong Username or Password")
+                console.log("Wrong Username or Password")
+            }else{
+                console.log(username)
+                // let div = document.createElement("div")
+                // div.append(username)
+                //  window.localStorage.setItem('user', JSON.stringify(username));
+                 alert("logged in Successfully")
+                 window.location.href="index.html"
+            }
+
+       })
+       .catch ((err)=>{
+           console.log(err);
+       })
+       
+   }
+//    console.log(username)
+   
+
+</script>

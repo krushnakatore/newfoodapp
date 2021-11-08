@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>SignUp</div>
+
+    <div id = "signup" ></div>
+
+    <form id = "signup-form" onsubmit="signup1(event)">
+        <label for = "fname">First Name:-</label>
+        <input type = "text" id = "name" placeholder="Please Enter Name here"></br>
+
+        <label for = "Email Id">Email ID:-</label>
+        <input type = "text" id = "email" placeholder="Please Enter Email here"></br>
+
+        <label for = "Password">Password:-</label>
+        <input type = "text" id = "password" placeholder="Please Enter Password here"></br>
+        
+        <label for = "Username">UserName:-</label>
+        <input type = "text" id = "username" placeholder="Please Enter UserName here"></br>
+        
+        <label for = "Mobile">Mobile No:-</label>
+        <input type = "number" id = "mobile" placeholder="Please write Mobile No here"></br>
+        
+        <label for = "Description">Description:-</label>
+        <input type = "text" id = "des" placeholder="Please write Description here"></br>
+        
+        <input type= "submit"/>
+    </form>
+</body>
+</html>
+<script>
+   function signup1(e){
+       e.preventDefault();
+       let form = document.getElementById("signup-form");
+
+   let user ={
+     
+    name : form.name.value,
+    email:form.email.value,
+    password: form.password.value,
+    username : form.username.value,
+    mobile:form.mobile.value,
+    description: form.des.value,
+
+
+   }
+
+console.log(user)
+
+user = JSON.stringify(user);
+
+fetch("https://masai-api-mocker.herokuapp.com/auth/register",{
+   
+    method:"POST",
+
+    body: user,
+
+    headers: {
+        "Content-Type":"application/json"
+    },
+
+
+
+})
+.then((res)=>{
+    return res.json();
+})
+.then((res)=>{
+    console.log(res)
+
+    if(res.error == true){
+        alert("username exist");
+    }else{
+        alert("signed in Succesfully")
+        window.location.href = "Login.html"
+    }
+})
+.catch((e)=>{
+    console.log(e)
+})
+
+
+   }
+  
+
+
+
+
+
+
+</script>
